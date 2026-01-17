@@ -2,11 +2,10 @@ import React from 'react';
 import { Pressable, Text, ActivityIndicator, StyleSheet, ViewStyle } from 'react-native';
 import { IconSymbol } from './icon-symbol';
 import { useColors } from '@/hooks/use-colors';
-import { cn } from '@/lib/utils';
 import * as Haptics from 'expo-haptics';
 import { Platform } from 'react-native';
 
-type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger';
+type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger' | 'success';
 type ButtonSize = 'sm' | 'md' | 'lg';
 
 interface ActionButtonProps {
@@ -43,89 +42,112 @@ export function ActionButton({
     onPress();
   };
 
-  const getVariantStyles = (): { bg: string; text: string; border?: string } => {
+  const getVariantStyles = () => {
     switch (variant) {
       case 'primary':
-        return { bg: 'bg-primary', text: 'text-white' };
+        return { 
+          backgroundColor: colors.primary, 
+          textColor: '#FFFFFF',
+          shadowColor: colors.primary,
+        };
       case 'secondary':
-        return { bg: 'bg-surface', text: 'text-foreground' };
+        return { 
+          backgroundColor: colors.surface, 
+          textColor: colors.foreground,
+          borderColor: colors.border,
+          borderWidth: 1.5,
+          shadowColor: 'transparent',
+        };
       case 'outline':
-        return { bg: 'bg-transparent', text: 'text-primary', border: 'border border-primary' };
+        return { 
+          backgroundColor: 'transparent', 
+          textColor: colors.primary,
+          borderColor: colors.primary,
+          borderWidth: 1.5,
+          shadowColor: 'transparent',
+        };
       case 'ghost':
-        return { bg: 'bg-transparent', text: 'text-foreground' };
+        return { 
+          backgroundColor: 'transparent', 
+          textColor: colors.foreground,
+          shadowColor: 'transparent',
+        };
       case 'danger':
-        return { bg: 'bg-error', text: 'text-white' };
+        return { 
+          backgroundColor: colors.error, 
+          textColor: '#FFFFFF',
+          shadowColor: colors.error,
+        };
+      case 'success':
+        return { 
+          backgroundColor: colors.success, 
+          textColor: '#FFFFFF',
+          shadowColor: colors.success,
+        };
       default:
-        return { bg: 'bg-primary', text: 'text-white' };
+        return { 
+          backgroundColor: colors.primary, 
+          textColor: '#FFFFFF',
+          shadowColor: colors.primary,
+        };
     }
   };
 
-  const getSizeStyles = (): { height: string; padding: string; textSize: string; iconSize: number } => {
+  const getSizeStyles = () => {
     switch (size) {
       case 'sm':
-        return { height: 'h-10', padding: 'px-4', textSize: 'text-sm', iconSize: 16 };
+        return { height: 44, paddingHorizontal: 16, fontSize: 14, iconSize: 16 };
       case 'md':
-        return { height: 'h-12', padding: 'px-6', textSize: 'text-base', iconSize: 20 };
+        return { height: 52, paddingHorizontal: 24, fontSize: 16, iconSize: 20 };
       case 'lg':
-        return { height: 'h-14', padding: 'px-8', textSize: 'text-lg', iconSize: 24 };
+        return { height: 56, paddingHorizontal: 32, fontSize: 17, iconSize: 22 };
       default:
-        return { height: 'h-12', padding: 'px-6', textSize: 'text-base', iconSize: 20 };
+        return { height: 52, paddingHorizontal: 24, fontSize: 16, iconSize: 20 };
     }
   };
 
   const variantStyles = getVariantStyles();
   const sizeStyles = getSizeStyles();
 
-  const getTextColor = () => {
-    if (disabled) return colors.muted;
-    switch (variant) {
-      case 'primary':
-      case 'danger':
-        return '#FFFFFF';
-      case 'outline':
-        return colors.primary;
-      default:
-        return colors.foreground;
-    }
-  };
-
   return (
     <Pressable
       onPress={handlePress}
       disabled={disabled || loading}
       style={({ pressed }) => [
-        pressed && { transform: [{ scale: 0.97 }], opacity: 0.9 },
-        disabled && { opacity: 0.5 },
+        styles.button,
+        {
+          backgroundColor: variantStyles.backgroundColor,
+          height: sizeStyles.height,
+          paddingHorizontal: sizeStyles.paddingHorizontal,
+          borderColor: variantStyles.borderColor,
+          borderWidth: variantStyles.borderWidth || 0,
+          shadowColor: variantStyles.shadowColor,
+        },
+        fullWidth && styles.fullWidth,
+        pressed && styles.pressed,
+        disabled && styles.disabled,
       ]}
-      className={cn(
-        "flex-row items-center justify-center rounded-xl",
-        variantStyles.bg,
-        variantStyles.border,
-        sizeStyles.height,
-        sizeStyles.padding,
-        fullWidth && "w-full",
-        className
-      )}
     >
       {loading ? (
-        <ActivityIndicator color={getTextColor()} />
+        <ActivityIndicator color={variantStyles.textColor} />
       ) : (
         <>
           {icon && iconPosition === 'left' && (
             <IconSymbol
               name={icon as any}
               size={sizeStyles.iconSize}
-              color={getTextColor()}
+              color={variantStyles.textColor}
               style={styles.iconLeft}
             />
           )}
           <Text
-            className={cn(
-              "font-semibold",
-              variantStyles.text,
-              sizeStyles.textSize
-            )}
-            style={{ color: getTextColor() }}
+            style={[
+              styles.text,
+              {
+                color: variantStyles.textColor,
+                fontSize: sizeStyles.fontSize,
+              },
+            ]}
           >
             {title}
           </Text>
@@ -133,7 +155,7 @@ export function ActionButton({
             <IconSymbol
               name={icon as any}
               size={sizeStyles.iconSize}
-              color={getTextColor()}
+              color={variantStyles.textColor}
               style={styles.iconRight}
             />
           )}
@@ -144,10 +166,34 @@ export function ActionButton({
 }
 
 const styles = StyleSheet.create({
+  button: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 14,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 10,
+    elevation: 4,
+  },
+  fullWidth: {
+    width: '100%',
+  },
+  pressed: {
+    transform: [{ scale: 0.98 }],
+    opacity: 0.9,
+  },
+  disabled: {
+    opacity: 0.5,
+  },
+  text: {
+    fontWeight: '700',
+    letterSpacing: 0.3,
+  },
   iconLeft: {
-    marginRight: 8,
+    marginRight: 10,
   },
   iconRight: {
-    marginLeft: 8,
+    marginLeft: 10,
   },
 });
