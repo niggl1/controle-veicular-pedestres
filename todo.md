@@ -85,3 +85,4 @@
 - [x] Botão verde "Falar com o Suporte" (WhatsApp) com letras brancas centralizado
 - [x] Redesign premium da tela de login - tipografia, botões, campos e espaçamento
 - [x] Alterar fundo da tela inicial para branco puro
+- [x] Garantir fundo branco em todos os elementos da tela de login

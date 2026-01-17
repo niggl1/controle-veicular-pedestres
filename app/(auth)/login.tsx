@@ -102,7 +102,7 @@ export default function LoginScreen() {
             {/* Campo E-mail */}
             <View style={styles.inputGroup}>
               <Text style={[styles.inputLabel, { color: colors.foreground }]}>E-mail ou Telefone</Text>
-              <View style={[styles.inputContainer, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+              <View style={[styles.inputContainer, { backgroundColor: '#FFFFFF', borderColor: colors.border }]}>
                 <IconSymbol name="person.fill" size={20} color={colors.muted} style={styles.inputIcon} />
                 <TextInput
                   style={[styles.input, { color: colors.foreground }]}
@@ -120,7 +120,7 @@ export default function LoginScreen() {
             {/* Campo Senha */}
             <View style={styles.inputGroup}>
               <Text style={[styles.inputLabel, { color: colors.foreground }]}>Senha</Text>
-              <View style={[styles.inputContainer, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+              <View style={[styles.inputContainer, { backgroundColor: '#FFFFFF', borderColor: colors.border }]}>
                 <IconSymbol name="lock.fill" size={20} color={colors.muted} style={styles.inputIcon} />
                 <TextInput
                   style={[styles.input, { color: colors.foreground }]}
@@ -208,7 +208,7 @@ export default function LoginScreen() {
           </View>
 
           {/* Credenciais Demo */}
-          <View style={[styles.demoSection, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+          <View style={[styles.demoSection, { backgroundColor: '#FFFFFF', borderColor: colors.border }]}>
             <Text style={[styles.demoTitle, { color: colors.muted }]}>
               Credenciais de demonstração
             </Text>
