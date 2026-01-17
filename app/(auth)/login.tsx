@@ -145,46 +145,44 @@ export default function LoginScreen() {
                 <View className="flex-1 h-px bg-border" />
               </View>
 
-              {/* Register Organization - Botão Grande Central */}
+              {/* Botão Azul - Cadastrar Organização/Condomínio */}
               <Pressable
                 onPress={handleRegisterOrganization}
-                style={({ pressed }) => [pressed && { opacity: 0.9, transform: [{ scale: 0.98 }] }]}
-                className="bg-surface border-2 border-primary rounded-2xl p-5 items-center mb-4"
+                style={({ pressed }) => [
+                  { backgroundColor: '#1E40AF' },
+                  pressed && { opacity: 0.9, transform: [{ scale: 0.98 }] }
+                ]}
+                className="rounded-xl py-4 px-6 items-center justify-center mb-4"
               >
-                <View className="w-14 h-14 bg-primary/15 rounded-full items-center justify-center mb-3">
+                <View className="flex-row items-center">
                   <IconSymbol
                     name="building.2.fill"
-                    size={28}
-                    color={colors.primary}
-                  />
-                </View>
-                <Text className="text-lg font-bold text-foreground">
-                  Cadastrar Organização
-                </Text>
-                <Text className="text-sm text-muted mt-1 text-center">
-                  Condomínio ou Empresa
-                </Text>
-              </Pressable>
-
-              {/* Support Button with WhatsApp Icon */}
-              <Pressable
-                onPress={handleSupport}
-                style={({ pressed }) => [pressed && { opacity: 0.9, transform: [{ scale: 0.98 }] }]}
-                className="bg-[#25D366]/10 border border-[#25D366]/30 rounded-2xl p-4 flex-row items-center justify-center"
-              >
-                <View className="w-10 h-10 bg-[#25D366] rounded-full items-center justify-center mr-3">
-                  <IconSymbol
-                    name="phone.fill"
-                    size={20}
+                    size={22}
                     color="#FFFFFF"
                   />
-                </View>
-                <View>
-                  <Text className="text-base font-semibold text-foreground">
-                    Falar com o Suporte
+                  <Text className="text-white text-base font-bold ml-2">
+                    Cadastrar Organização / Condomínio
                   </Text>
-                  <Text className="text-xs text-[#25D366]">
-                    WhatsApp disponível
+                </View>
+              </Pressable>
+
+              {/* Botão Verde - Falar com o Suporte (WhatsApp) */}
+              <Pressable
+                onPress={handleSupport}
+                style={({ pressed }) => [
+                  { backgroundColor: '#25D366' },
+                  pressed && { opacity: 0.9, transform: [{ scale: 0.98 }] }
+                ]}
+                className="rounded-xl py-4 px-6 items-center justify-center"
+              >
+                <View className="flex-row items-center">
+                  <IconSymbol
+                    name="phone.fill"
+                    size={22}
+                    color="#FFFFFF"
+                  />
+                  <Text className="text-white text-base font-bold ml-2">
+                    Falar com o Suporte
                   </Text>
                 </View>
               </Pressable>

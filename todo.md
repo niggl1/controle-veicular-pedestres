@@ -81,3 +81,5 @@
 ## Melhorias de UI - Tela de Login
 - [x] Botão grande central "Cadastrar Organização/Condomínio"
 - [x] Botão "Falar com Suporte" com ícone WhatsApp abaixo do botão central
+- [x] Botão azul "Cadastrar Organização/Condomínio" com letras brancas centralizado
+- [x] Botão verde "Falar com o Suporte" (WhatsApp) com letras brancas centralizado
