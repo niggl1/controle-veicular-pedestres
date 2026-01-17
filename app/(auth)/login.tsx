@@ -4,17 +4,70 @@ import { router } from 'expo-router';
 import { ScreenContainer } from '@/components/screen-container';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { useAuth } from '@/lib/auth-context';
-import { useColors } from '@/hooks/use-colors';
 import { TextInput } from 'react-native';
 
+// Definição dos temas
+const THEMES = {
+  white: {
+    background: '#FFFFFF',
+    inputBackground: '#FFFFFF',
+    inputBorder: '#2563EB',
+    title: '#2563EB',
+    subtitle: '#64748B',
+    label: '#0F172A',
+    inputText: '#000000',
+    placeholder: '#94A3B8',
+    link: '#2563EB',
+    buttonPrimary: '#2563EB',
+    buttonText: '#FFFFFF',
+    divider: '#E2E8F0',
+    dividerText: '#94A3B8',
+    demoBackground: '#FFFFFF',
+    demoBorder: '#2563EB',
+    demoTitle: '#64748B',
+    demoText: '#64748B',
+    iconColor: '#2563EB',
+    toggleButton: '#2563EB',
+    toggleText: '#FFFFFF',
+  },
+  blue: {
+    background: '#2563EB',
+    inputBackground: '#1E40AF',
+    inputBorder: '#FFFFFF',
+    title: '#FFFFFF',
+    subtitle: '#BFDBFE',
+    label: '#FFFFFF',
+    inputText: '#FFFFFF',
+    placeholder: '#93C5FD',
+    link: '#FFFFFF',
+    buttonPrimary: '#FFFFFF',
+    buttonText: '#2563EB',
+    divider: '#3B82F6',
+    dividerText: '#BFDBFE',
+    demoBackground: '#1E40AF',
+    demoBorder: '#FFFFFF',
+    demoTitle: '#BFDBFE',
+    demoText: '#BFDBFE',
+    iconColor: '#FFFFFF',
+    toggleButton: '#FFFFFF',
+    toggleText: '#2563EB',
+  },
+};
+
 export default function LoginScreen() {
-  const colors = useColors();
   const { login, isLoading, organizationLogo } = useAuth();
   
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
+  const [currentTheme, setCurrentTheme] = useState<'white' | 'blue'>('white');
+
+  const theme = THEMES[currentTheme];
+
+  const toggleTheme = () => {
+    setCurrentTheme(currentTheme === 'white' ? 'blue' : 'white');
+  };
 
   const handleLogin = async () => {
     setError('');
@@ -54,7 +107,7 @@ export default function LoginScreen() {
   };
 
   return (
-    <ScreenContainer edges={["top", "bottom", "left", "right"]}>
+    <View style={[styles.fullScreen, { backgroundColor: theme.background }]}>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.container}
@@ -64,9 +117,30 @@ export default function LoginScreen() {
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
         >
+          {/* Botão Alternar Tema */}
+          <View style={styles.themeToggleContainer}>
+            <Pressable
+              onPress={toggleTheme}
+              style={({ pressed }) => [
+                styles.themeToggleButton,
+                { backgroundColor: theme.toggleButton },
+                pressed && styles.buttonPressed
+              ]}
+            >
+              <IconSymbol 
+                name={currentTheme === 'white' ? 'moon.fill' : 'sun.max.fill'} 
+                size={18} 
+                color={theme.toggleText} 
+              />
+              <Text style={[styles.themeToggleText, { color: theme.toggleText }]}>
+                {currentTheme === 'white' ? 'Tema Azul' : 'Tema Branco'}
+              </Text>
+            </Pressable>
+          </View>
+
           {/* Header com Logo */}
           <View style={styles.headerSection}>
-            <View style={[styles.logoContainer, { backgroundColor: colors.primary + '12' }]}>
+            <View style={[styles.logoContainer, { backgroundColor: currentTheme === 'white' ? theme.iconColor + '15' : 'rgba(255,255,255,0.15)' }]}>
               {organizationLogo ? (
                 <Image
                   source={{ uri: organizationLogo }}
@@ -77,14 +151,14 @@ export default function LoginScreen() {
                 <IconSymbol
                   name="shield.fill"
                   size={48}
-                  color={colors.primary}
+                  color={theme.iconColor}
                 />
               )}
             </View>
-            <Text style={[styles.title, { color: colors.foreground }]}>
+            <Text style={[styles.title, { color: theme.title }]}>
               Controle de Acesso
             </Text>
-            <Text style={[styles.subtitle, { color: colors.muted }]}>
+            <Text style={[styles.subtitle, { color: theme.subtitle }]}>
               Veículos e Pedestres
             </Text>
           </View>
@@ -93,21 +167,21 @@ export default function LoginScreen() {
           <View style={styles.formSection}>
             {/* Mensagem de Erro */}
             {error ? (
-              <View style={[styles.errorContainer, { backgroundColor: colors.error + '10', borderColor: colors.error + '30' }]}>
-                <IconSymbol name="exclamationmark.triangle.fill" size={18} color={colors.error} />
-                <Text style={[styles.errorText, { color: colors.error }]}>{error}</Text>
+              <View style={[styles.errorContainer, { backgroundColor: '#EF444420', borderColor: '#EF4444' }]}>
+                <IconSymbol name="exclamationmark.triangle.fill" size={18} color="#EF4444" />
+                <Text style={[styles.errorText, { color: '#EF4444' }]}>{error}</Text>
               </View>
             ) : null}
 
             {/* Campo E-mail */}
             <View style={styles.inputGroup}>
-              <Text style={[styles.inputLabel, { color: colors.foreground }]}>E-mail ou Telefone</Text>
-              <View style={[styles.inputContainer, { backgroundColor: '#FFFFFF', borderColor: colors.primary }]}>
-                <IconSymbol name="person.fill" size={20} color={colors.muted} style={styles.inputIcon} />
+              <Text style={[styles.inputLabel, { color: theme.label }]}>E-mail ou Telefone</Text>
+              <View style={[styles.inputContainer, { backgroundColor: theme.inputBackground, borderColor: theme.inputBorder }]}>
+                <IconSymbol name="person.fill" size={20} color={theme.iconColor} style={styles.inputIcon} />
                 <TextInput
-                  style={[styles.input, { color: colors.foreground }]}
+                  style={[styles.input, { color: theme.inputText }]}
                   placeholder="Digite seu e-mail ou telefone"
-                  placeholderTextColor={colors.muted}
+                  placeholderTextColor={theme.placeholder}
                   value={email}
                   onChangeText={setEmail}
                   keyboardType="email-address"
@@ -119,13 +193,13 @@ export default function LoginScreen() {
 
             {/* Campo Senha */}
             <View style={styles.inputGroup}>
-              <Text style={[styles.inputLabel, { color: colors.foreground }]}>Senha</Text>
-              <View style={[styles.inputContainer, { backgroundColor: '#FFFFFF', borderColor: colors.primary }]}>
-                <IconSymbol name="lock.fill" size={20} color={colors.muted} style={styles.inputIcon} />
+              <Text style={[styles.inputLabel, { color: theme.label }]}>Senha</Text>
+              <View style={[styles.inputContainer, { backgroundColor: theme.inputBackground, borderColor: theme.inputBorder }]}>
+                <IconSymbol name="lock.fill" size={20} color={theme.iconColor} style={styles.inputIcon} />
                 <TextInput
-                  style={[styles.input, { color: colors.foreground }]}
+                  style={[styles.input, { color: theme.inputText }]}
                   placeholder="Digite sua senha"
-                  placeholderTextColor={colors.muted}
+                  placeholderTextColor={theme.placeholder}
                   value={password}
                   onChangeText={setPassword}
                   secureTextEntry={!showPassword}
@@ -139,7 +213,7 @@ export default function LoginScreen() {
                   <IconSymbol
                     name={showPassword ? "eye.slash.fill" : "eye.fill"}
                     size={20}
-                    color={colors.muted}
+                    color={theme.iconColor}
                   />
                 </Pressable>
               </View>
@@ -150,7 +224,7 @@ export default function LoginScreen() {
               onPress={handleForgotPassword}
               style={({ pressed }) => [styles.forgotButton, pressed && styles.pressed]}
             >
-              <Text style={[styles.forgotText, { color: colors.primary }]}>
+              <Text style={[styles.forgotText, { color: theme.link }]}>
                 Esqueci minha senha
               </Text>
             </Pressable>
@@ -161,23 +235,23 @@ export default function LoginScreen() {
               disabled={isLoading}
               style={({ pressed }) => [
                 styles.primaryButton,
-                { backgroundColor: colors.primary },
+                { backgroundColor: theme.buttonPrimary },
                 pressed && styles.buttonPressed,
                 isLoading && styles.buttonDisabled
               ]}
             >
               {isLoading ? (
-                <Text style={styles.buttonText}>Entrando...</Text>
+                <Text style={[styles.buttonText, { color: theme.buttonText }]}>Entrando...</Text>
               ) : (
-                <Text style={styles.buttonText}>Entrar</Text>
+                <Text style={[styles.buttonText, { color: theme.buttonText }]}>Entrar</Text>
               )}
             </Pressable>
 
             {/* Divisor */}
             <View style={styles.dividerContainer}>
-              <View style={[styles.dividerLine, { backgroundColor: colors.border }]} />
-              <Text style={[styles.dividerText, { color: colors.muted }]}>ou</Text>
-              <View style={[styles.dividerLine, { backgroundColor: colors.border }]} />
+              <View style={[styles.dividerLine, { backgroundColor: theme.divider }]} />
+              <Text style={[styles.dividerText, { color: theme.dividerText }]}>ou</Text>
+              <View style={[styles.dividerLine, { backgroundColor: theme.divider }]} />
             </View>
 
             {/* Botão Cadastrar Organização */}
@@ -185,12 +259,14 @@ export default function LoginScreen() {
               onPress={handleRegisterOrganization}
               style={({ pressed }) => [
                 styles.secondaryButton,
-                { backgroundColor: '#1E40AF' },
+                { backgroundColor: currentTheme === 'white' ? '#1E40AF' : '#FFFFFF' },
                 pressed && styles.buttonPressed
               ]}
             >
-              <IconSymbol name="building.2.fill" size={20} color="#FFFFFF" />
-              <Text style={styles.secondaryButtonText}>Cadastrar Organização / Condomínio</Text>
+              <IconSymbol name="building.2.fill" size={20} color={currentTheme === 'white' ? '#FFFFFF' : '#1E40AF'} />
+              <Text style={[styles.secondaryButtonText, { color: currentTheme === 'white' ? '#FFFFFF' : '#1E40AF' }]}>
+                Cadastrar Organização / Condomínio
+              </Text>
             </Pressable>
 
             {/* Botão WhatsApp */}
@@ -208,29 +284,32 @@ export default function LoginScreen() {
           </View>
 
           {/* Credenciais Demo */}
-          <View style={[styles.demoSection, { backgroundColor: '#FFFFFF', borderColor: colors.primary }]}>
-            <Text style={[styles.demoTitle, { color: colors.muted }]}>
+          <View style={[styles.demoSection, { backgroundColor: theme.demoBackground, borderColor: theme.demoBorder }]}>
+            <Text style={[styles.demoTitle, { color: theme.demoTitle }]}>
               Credenciais de demonstração
             </Text>
             <View style={styles.demoCredentials}>
-              <Text style={[styles.demoText, { color: colors.muted }]}>
+              <Text style={[styles.demoText, { color: theme.demoText }]}>
                 admin@teste.com • portaria@teste.com
               </Text>
-              <Text style={[styles.demoText, { color: colors.muted }]}>
+              <Text style={[styles.demoText, { color: theme.demoText }]}>
                 morador@teste.com • gestao@teste.com
               </Text>
-              <Text style={[styles.demoPassword, { color: colors.foreground }]}>
+              <Text style={[styles.demoPassword, { color: theme.label }]}>
                 Senha: 123456
               </Text>
             </View>
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
-    </ScreenContainer>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
+  fullScreen: {
+    flex: 1,
+  },
   container: {
     flex: 1,
   },
@@ -238,7 +317,25 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     paddingHorizontal: 24,
     paddingVertical: 32,
-    justifyContent: 'center',
+    paddingTop: 60,
+  },
+  
+  // Theme Toggle
+  themeToggleContainer: {
+    alignItems: 'flex-end',
+    marginBottom: 20,
+  },
+  themeToggleButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    borderRadius: 20,
+    gap: 8,
+  },
+  themeToggleText: {
+    fontSize: 14,
+    fontWeight: '600',
   },
   
   // Header
@@ -306,7 +403,7 @@ const styles = StyleSheet.create({
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderWidth: 1.5,
+    borderWidth: 2,
     borderRadius: 14,
     paddingHorizontal: 16,
     height: 56,
@@ -328,11 +425,13 @@ const styles = StyleSheet.create({
   forgotButton: {
     alignSelf: 'flex-start',
     marginBottom: 24,
-    paddingVertical: 4,
   },
   forgotText: {
     fontSize: 14,
     fontWeight: '600',
+  },
+  pressed: {
+    opacity: 0.7,
   },
   
   // Buttons
@@ -341,14 +440,14 @@ const styles = StyleSheet.create({
     borderRadius: 14,
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: '#2563EB',
+    marginBottom: 20,
+    shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.25,
-    shadowRadius: 12,
-    elevation: 6,
+    shadowOpacity: 0.15,
+    shadowRadius: 8,
+    elevation: 4,
   },
   buttonText: {
-    color: '#FFFFFF',
     fontSize: 17,
     fontWeight: '700',
     letterSpacing: 0.3,
@@ -358,17 +457,14 @@ const styles = StyleSheet.create({
     transform: [{ scale: 0.98 }],
   },
   buttonDisabled: {
-    opacity: 0.7,
-  },
-  pressed: {
-    opacity: 0.7,
+    opacity: 0.6,
   },
   
   // Divider
   dividerContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginVertical: 28,
+    marginBottom: 20,
   },
   dividerLine: {
     flex: 1,
@@ -387,16 +483,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 10,
     marginBottom: 12,
-    shadowColor: '#1E40AF',
+    gap: 10,
+    shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 10,
+    shadowOpacity: 0.15,
+    shadowRadius: 8,
     elevation: 4,
   },
   secondaryButtonText: {
-    color: '#FFFFFF',
     fontSize: 15,
     fontWeight: '700',
     letterSpacing: 0.2,
@@ -409,11 +504,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    marginBottom: 32,
     gap: 10,
     shadowColor: '#25D366',
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.25,
-    shadowRadius: 10,
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
     elevation: 4,
   },
   whatsappButtonText: {
@@ -425,17 +521,16 @@ const styles = StyleSheet.create({
   
   // Demo Section
   demoSection: {
-    marginTop: 36,
     padding: 20,
     borderRadius: 16,
-    borderWidth: 1,
+    borderWidth: 1.5,
     alignItems: 'center',
   },
   demoTitle: {
-    fontSize: 13,
+    fontSize: 12,
     fontWeight: '600',
     textTransform: 'uppercase',
-    letterSpacing: 0.8,
+    letterSpacing: 1,
     marginBottom: 12,
   },
   demoCredentials: {

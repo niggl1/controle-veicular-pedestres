@@ -87,3 +87,5 @@
 - [x] Alterar fundo da tela inicial para branco puro
 - [x] Garantir fundo branco em todos os elementos da tela de login
 - [x] Alterar bordas dos campos de entrada para azul na tela de login
+- [x] Textos dentro dos campos na cor preta
+- [x] Botão para alternar entre tema branco (letras azuis/pretas) e tema azul (letras brancas)
