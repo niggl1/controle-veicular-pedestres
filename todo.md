@@ -76,4 +76,8 @@
 ## Infraestrutura
 - [x] Gerar logo do aplicativo
 - [x] Configurar app.config.ts com branding
-- [ ] Enviar projeto para GitHub
+- [x] Enviar projeto para GitHub
+
+## Melhorias de UI - Tela de Login
+- [x] Botão grande central "Cadastrar Organização/Condomínio"
+- [x] Botão "Falar com Suporte" com ícone WhatsApp abaixo do botão central

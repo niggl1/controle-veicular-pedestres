@@ -123,7 +123,7 @@ export default function LoginScreen() {
               <Pressable
                 onPress={handleForgotPassword}
                 style={({ pressed }) => [pressed && { opacity: 0.6 }]}
-                className="self-end mb-6"
+                className="self-start mb-6"
               >
                 <Text className="text-primary text-sm font-medium">
                   Esqueci minha senha
@@ -145,31 +145,48 @@ export default function LoginScreen() {
                 <View className="flex-1 h-px bg-border" />
               </View>
 
-              {/* Register Organization */}
-              <ActionButton
-                title="Cadastrar Organização"
-                onPress={handleRegisterOrganization}
-                variant="outline"
-                icon="building.2.fill"
-                fullWidth
-              />
-
-              {/* Support Button */}
+              {/* Register Organization - Botão Grande Central */}
               <Pressable
-                onPress={handleSupport}
-                style={({ pressed }) => [pressed && { opacity: 0.7 }]}
-                className="flex-row items-center justify-center mt-6 py-3"
+                onPress={handleRegisterOrganization}
+                style={({ pressed }) => [pressed && { opacity: 0.9, transform: [{ scale: 0.98 }] }]}
+                className="bg-surface border-2 border-primary rounded-2xl p-5 items-center mb-4"
               >
-                <View className="w-8 h-8 bg-success/15 rounded-full items-center justify-center mr-2">
+                <View className="w-14 h-14 bg-primary/15 rounded-full items-center justify-center mb-3">
                   <IconSymbol
-                    name="phone.fill"
-                    size={18}
-                    color={colors.success}
+                    name="building.2.fill"
+                    size={28}
+                    color={colors.primary}
                   />
                 </View>
-                <Text className="text-foreground font-medium">
-                  Falar com o Suporte
+                <Text className="text-lg font-bold text-foreground">
+                  Cadastrar Organização
                 </Text>
+                <Text className="text-sm text-muted mt-1 text-center">
+                  Condomínio ou Empresa
+                </Text>
+              </Pressable>
+
+              {/* Support Button with WhatsApp Icon */}
+              <Pressable
+                onPress={handleSupport}
+                style={({ pressed }) => [pressed && { opacity: 0.9, transform: [{ scale: 0.98 }] }]}
+                className="bg-[#25D366]/10 border border-[#25D366]/30 rounded-2xl p-4 flex-row items-center justify-center"
+              >
+                <View className="w-10 h-10 bg-[#25D366] rounded-full items-center justify-center mr-3">
+                  <IconSymbol
+                    name="phone.fill"
+                    size={20}
+                    color="#FFFFFF"
+                  />
+                </View>
+                <View>
+                  <Text className="text-base font-semibold text-foreground">
+                    Falar com o Suporte
+                  </Text>
+                  <Text className="text-xs text-[#25D366]">
+                    WhatsApp disponível
+                  </Text>
+                </View>
               </Pressable>
             </View>
 
