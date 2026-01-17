@@ -3,11 +3,11 @@ const themeColors = {
   // Primary - Azul profissional premium
   primary: { light: '#2563EB', dark: '#3B82F6' },
   
-  // Background - Tons neutros sofisticados
-  background: { light: '#FAFBFC', dark: '#0F172A' },
+  // Background - Branco puro para light mode
+  background: { light: '#FFFFFF', dark: '#0F172A' },
   
-  // Surface - Cards e elementos elevados
-  surface: { light: '#FFFFFF', dark: '#1E293B' },
+  // Surface - Cards e elementos elevados (tom levemente cinza para contraste)
+  surface: { light: '#F8FAFC', dark: '#1E293B' },
   
   // Foreground - Texto principal
   foreground: { light: '#0F172A', dark: '#F8FAFC' },
